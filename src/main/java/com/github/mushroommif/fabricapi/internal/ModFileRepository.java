@@ -45,7 +45,9 @@ public final class ModFileRepository {
     }
 
     public void init() {
-        clearTempDir();
+        if (!extractedResourcesDir.mkdirs()) {
+            clearExtractedResources();
+        }
         registerEventHandlers();
 
         for (ModContainer mod : FabricLoader.getInstance().getAllMods()) {
@@ -333,7 +335,7 @@ public final class ModFileRepository {
                 .substring(0, formableCivFilePath.indexOf('/'));
     }
 
-    private void clearTempDir() {
+    private void clearExtractedResources() {
         try {
             Files.walkFileTree(Paths.get(extractedResourcesDir.getAbsolutePath()), new SimpleFileVisitor<Path>() {
                 @Override
